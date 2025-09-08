@@ -33,3 +33,11 @@ Export-Csv -Path $filePath
 ls $folderpath
 Write-Host "-------"
 cat $folderPath/out.csv
+
+# Without changing the directory (do your operations recursively without getting in to the child directory)
+# Find ever .csv file recursively and change their extensions to .log
+# Recursively display all the files (not directories)
+
+$files = Get-ChildItem -Recurse -File
+$files | Rename-Item -NewName {$_.Name -replace '.csv', '.log'}
+Get-ChildItem -Path . -Recurse -File
