@@ -27,8 +27,8 @@ function getNotEnabledUsers(){
 ********************************#>
 function checkUser($name){
     
-    $usr = Get-LocalUser | Where-Object { $_.name -ilike $name }
-    if($user) {
+    $usr = Get-LocalUser | Where-Object { $_.Name -ilike $name }
+    if($usr) {
         return $true
         }
     else {

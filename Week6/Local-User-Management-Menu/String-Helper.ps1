@@ -37,13 +37,13 @@ Output: 1) True if the string meets requirements
         2) False if it doesn't
 *************************************************************#>
 function checkPassword($password) {
-    $regex = [regex] "^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9])(.{7,})$"
-    $reqs = $password -match $regex
+    # Convert the password out of a secure string temporarily
+    $plainTextPass = [System.Net.NetworkCredential]::new('', $password).Password
 
-    if($reqs) {
-        return True
-        }
-    else {
-        return False
-        }
+    #Define Regex
+    $regex = [regex] "^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+={}\[\]:;'<>,.?/\\|`~-]).{7,}$"
+
+    #Should return true or false
+    $reqs = $plainTextPass -match $regex
+    return $reqs
 }
