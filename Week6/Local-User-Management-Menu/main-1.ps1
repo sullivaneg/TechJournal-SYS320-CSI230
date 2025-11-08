@@ -169,11 +169,13 @@ while($operation){
     }
 
     elseif($choice -eq 9){
-    # TODO: Create another choice "List at Risk Users" that
-    #              - Lists all the users with more than 10 failed logins in the last <User Given> days.  
-    #                (You might need to create some failed logins to test)
-    #              - Do not forget to update prompt and option numbers
-        
+        $days = Read-Host -Prompt "How many days would you like logs for?"
+        $usrLogins = getFailedLogins $days
+        $loginsByUsr = $usrLogins | Group-Object "User"`
+                                  | Select-Object Name, Count`
+                                  | Where-Object {$_.Count -ge 10}
+        Write-Host ($loginsByUsr | Format-Table | Out-String)
+
             
     }
 
