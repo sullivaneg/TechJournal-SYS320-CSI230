@@ -1,5 +1,6 @@
 ﻿function ChooseTimeToRun($Time){
-$schedulerTasks = Get-ScheduledTask | Where-Object { $_.TaskName -ilike "myTask" }
+
+$scheduledTasks = Get-ScheduledTask | Where-Object { $_.TaskName -ilike "myTask" }
 
 if($scheduledTasks -ne $null){
     Write-Host "The task already exists." | Out-String
