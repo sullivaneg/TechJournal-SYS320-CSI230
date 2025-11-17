@@ -13,8 +13,34 @@ function changeConfiguration {
 Write-Host "`n"
         Write-Host "Changing your configuration...`n"
 
-        $days = Read-Host -Prompt "How many days of logs would you like?"
-        $time = Read-Host -Prompt "What execution time would you like (HH:MM AM/PM)"
+        #Input Integer validation (Source: @veefu on stackoverflow)
+        $days = 0
+        $inputValid = $false
+
+        do {
+            $try_days = Read-Host -Prompt "How many days of logs would you like?"
+            if ([int]::TryParse($try_days, [ref]$days)) {
+                $inputValid = $true
+            } else {
+                Write-Host "`nInvalid Input: Please enter an integer`n" -ForegroundColor Red
+            } 
+        } while (-not $inputValid)
+
+        #Time Input Validation
+        $time = 0
+        $temp = 0
+        $inputValid = $false
+
+        do {
+            $try_time = Read-Host -Prompt "What execution time would you like (H:MM AM/PM)"
+            $time = $try_time
+
+            if ([DateTime]::TryParseExact($try_time, "h:mm tt", $null, [System.Globalization.DateTimeStyles]::None, [ref]$temp)) {
+                $inputValid = $true
+            } else {
+                Write-Host "`nInvalid Input: Please enter a time in the format (H:MM AM/PM)`n" -ForegroundColor Red
+            } 
+        } while (-not $inputValid)
 
         Set-Content -Path $file_path -Value $days, $time
         Write-Host "`nFile Changed"
