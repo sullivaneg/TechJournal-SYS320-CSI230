@@ -9,6 +9,7 @@
                                       "Time Scheduled" = $time;`
                                           }
     $config_table | Format-Table -Autosize
+    return $config_table 
 }
 
 function changeConfiguration($file_path) {

@@ -16,6 +16,7 @@ function getChrome(){
         echo "Found a chrome process running, stopping process..."
         Stop-Process -Name "chrome"
         }
+}
 
 # Verify
 Get-Process -Name "chrome"

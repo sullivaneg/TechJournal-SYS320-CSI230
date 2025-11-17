@@ -169,18 +169,12 @@ while($operation){
     }
 
     elseif($choice -eq 9){
-        $days = Read-Host -Prompt "How many days would you like logs for?"
-        $usrLogins = getFailedLogins $days
-        $loginsByUsr = $usrLogins | Group-Object "User"`
-                                  | Select-Object Name, Count`
-                                  | Where-Object {$_.Count -ge 10}
-        Write-Host ($loginsByUsr | Format-Table | Out-String)
-
-            
+        getRiskUsers
     }
 
     else {
         Write-Host "Please choose a valid option"
         continue
-    }
+    
+}
 }
