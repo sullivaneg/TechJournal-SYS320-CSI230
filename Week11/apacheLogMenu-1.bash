@@ -1,13 +1,13 @@
 #! /bin/bash
 
-logFile="/var/log/apache2/access.log"
+logFile="access.txt"
 
 function displayAllLogs(){
 	cat "$logFile"
 }
 
 function displayOnlyIPs(){
-        cat "$logFile" | cut -d ' ' -f 1 | sort -n | uniq -c
+    cat "$logFile" | cut -d ' ' -f 1 | sort -n | uniq -c
 }
 
 function displayOnlyPages() {
@@ -44,20 +44,22 @@ function histogram(){
 # only with daily number of visits that are greater than 10 
 
 function frequentVisitors(){
-    $log=$(histogram)
-    for $line in $log; do
-        $num=$(cat $line | cut -d' ' -f1)
-        if $num -gt 10; then
-            echo $line
+    histogram | while read -r count ip day; do
+        if [ "$count" -gt 10 ]; then
+            echo "$count $ip $day"
         fi
     done
- }
- 
+}
+
 # function: suspiciousVisitors
 # Manually make a list of indicators of attack (ioc.txt)
 # filter the records with this indicators of attack
 # only display the unique count of IP addresses.  
 # Hint: there are examples in slides
+
+function suspiciousVisitors(){
+    $logs=(cat "$logFile" | cut -d ' ' -f 1,7 | sort -n | uniq -c)
+}
 
 # Keep in mind that I have selected long way of doing things to 
 # demonstrate loops, functions, etc. If you can do things simpler,
@@ -106,4 +108,3 @@ do
 	# Display a message, if an invalid input is given
 	fi
 done
-
