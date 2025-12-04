@@ -57,10 +57,23 @@ function frequentVisitors(){
 # only display the unique count of IP addresses.  
 # Hint: there are examples in slides
 
-function suspiciousVisitors(){
-    $logs=(cat "$logFile" | cut -d ' ' -f 1,7 | sort -n | uniq -c)
-}
+function suspiciousVisitors() {
+    cat "$logFile" | cut -d' ' -f1,7 > sus_log.tmp
+    :> sus_logs.txt
 
+    #loop my logs    
+     while read -r ip page; do
+         #check IOC file
+         while read -r ioc; do
+            if grep -q "$ioc" <<< "$page"; then
+                echo "$ip" >> sus_logs.txt
+            fi
+         done < ioc.txt
+     done < sus_log.tmp
+
+     sort sus_logs.txt |uniq -c
+}
+    
 # Keep in mind that I have selected long way of doing things to 
 # demonstrate loops, functions, etc. If you can do things simpler,
 # it is welcomed.
@@ -73,7 +86,7 @@ do
 	echo "[3] Display only Pages"
 	echo "[4] Histogram"
 	echo "[5] Frequent Visitors"
-	# Suspicious visitors
+	echo "[6] Suspicious Visitors"
 	echo "[7] Quit"
 
 	read userInput
@@ -105,6 +118,9 @@ do
         frequentVisitors
 
 	# Display suspicious visitors
+	elif [[ "$userInput" == "6" ]]; then
+        echo "Suspicious Visitors:"
+        suspiciousVisitors 
 	# Display a message, if an invalid input is given
 	fi
 done
