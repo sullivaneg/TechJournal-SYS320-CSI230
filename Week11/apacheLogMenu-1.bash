@@ -58,22 +58,9 @@ function frequentVisitors(){
 # Hint: there are examples in slides
 
 function suspiciousVisitors() {
-    cat "$logFile" | cut -d' ' -f1,7 > sus_log.tmp
-    :> sus_logs.txt
-
-    #loop my logs    
-     while read -r ip page; do
-         #check IOC file
-         while read -r ioc; do
-            if grep -q "$ioc" <<< "$page"; then
-                echo "$ip" >> sus_logs.txt
-            fi
-         done < ioc.txt
-     done < sus_log.tmp
-
-     sort sus_logs.txt |uniq -c
+    cat "$logFile" | egrep -i -f ioc.txt | cut -d ' ' -f 1 | sort | uniq -c
 }
-    
+
 # Keep in mind that I have selected long way of doing things to 
 # demonstrate loops, functions, etc. If you can do things simpler,
 # it is welcomed.
@@ -122,5 +109,7 @@ do
         echo "Suspicious Visitors:"
         suspiciousVisitors 
 	# Display a message, if an invalid input is given
+	else
+	    echo "Invalid Choice!"
 	fi
 done
