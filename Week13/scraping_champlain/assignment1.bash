@@ -39,12 +39,12 @@ echo ""
 
 function display_by_loc() {
 
-echo "Please input a location (In format: ABR<NUM>: CCM 401):
+echo "Please input a location (In format: ABR<NUM>: CCM 401):"
 read location
 echo ""
 echo "Courses in $location"
-cat "$courseFile" | grep "$location" | cut -d';' -f1,2,5,6,7,8| \
-sort -n | uniq -c 
+cat "$courseFile" | grep "$location" | cut -d';' -f1,2,5,6,7 | \
+sed 's/;/ | /g'
 echo ""
 
 }
@@ -56,12 +56,25 @@ echo ""
 # Example input: SEC
 # Example output: See the screenshots in canvas
 
+function available_classes() {
+
+echo "Please input a class code (i.e SEC):"
+read code
+echo ""
+echo "Available courses in $code"
+cat $courseFile | grep "$code" | awk -F';' '$4 > 0' | \
+cut -d';' -f1-10 | sed 's/;/ | /g'
+echo "" 
+}
+
 while :
 do
 	echo ""
 	echo "Please select and option:"
 	echo "[1] Display courses of an instructor"
 	echo "[2] Display course count of instructors"
+    echo "[3] Display courses by location"
+    echo "[4] Find available courses"
 	echo "[5] Exit"
 
 	read userInput
@@ -76,6 +89,12 @@ do
 
 	elif [[ "$userInput" == "2" ]]; then
 		courseCountofInsts
+
+    elif [[ "$userInput" == "3" ]]; then 
+        display_by_loc
+
+    elif [[ "userInput" == "4" ]]; then
+        available_classes
 
 	# TODO - 3 Display a message, if an invalid input is given
     else
