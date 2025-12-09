@@ -93,7 +93,7 @@ do
     elif [[ "$userInput" == "3" ]]; then 
         display_by_loc
 
-    elif [[ "userInput" == "4" ]]; then
+    elif [[ "$userInput" == "4" ]]; then
         available_classes
 
 	# TODO - 3 Display a message, if an invalid input is given
