@@ -34,7 +34,7 @@ function ExternalListeningPorts(){
 
 # Todo-2: Complete the ExternalListeningPorts that will print the port and application
 # that is listening on that port from network (using ss utility)
-elpo=$(ss -lpt | awk -F"[[:space:]]+" '{print $4,$6}' | tr -d "\"" | \
+elpo=$(ss -lptn | awk -F"[[:space:]]+" '{print $4,$6}' | tr -d "\"" | \
 grep -E "[0-9]{1,3}\." | grep -v "127.0.0" | \
 awk -F"[[:space:]:(),]+" '{print $2,$4}' | tr -d "\"")
 
@@ -63,6 +63,7 @@ while getopts  "n:s:" opt; do
             if [[ "$OPTARG" != "internal" && "$OPTARG" != "external" ]]; then
                 echo "Invalid argument for -n"
                 helpmenu
+                exit
             fi
 
             if [[ "$OPTARG" == "internal" ]]; then
@@ -80,6 +81,7 @@ while getopts  "n:s:" opt; do
             if [[ "$OPTARG" != "internal" && "$OPTARG" != "external" ]]; then
                 echo "Invalid argument for -s"
                 helpmenu
+                exit
             fi
 
             if [[ "$OPTARG" == "internal" ]]; then
