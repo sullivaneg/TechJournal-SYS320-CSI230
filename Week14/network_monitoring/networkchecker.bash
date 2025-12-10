@@ -34,7 +34,7 @@ function ExternalListeningPorts(){
 
 # Todo-2: Complete the ExternalListeningPorts that will print the port and application
 # that is listening on that port from network (using ss utility)
-elpo=$(ss -lpt | awk -F"[[:space:]]+" '{print $4,$6} | tr -d "\"" | \
+elpo=$(ss -lpt | awk -F"[[:space:]]+" '{print $4,$6}' | tr -d "\"" | \
 grep -E "[0-9]{1,3}\." | grep -v "127.0.0" | \
 awk -F"[[:space:]:(),]+" '{print $2,$4}' | tr -d "\"")
 
@@ -50,12 +50,13 @@ ilpo=$(ss -ltpn | awk  -F"[[:space:]:(),]+" '/127.0.0./ {print $5,$9}' | tr -d "
 
 # Todo-3: If the program is not taking exactly 2 arguments, print helpmenu
 
-if ["$#" -ne 2]; then
+if [ "$#" -ne 2 ]; then
     helpmenu
+    exit 1
 fi
 
 # Todo-4: Use getopts to accept options -n and -s (both will have an argument)
-while getopts  "n:s" opt; do
+while getopts  "n:s:" opt; do
     case $opt in
 
         n) 
@@ -70,7 +71,7 @@ while getopts  "n:s" opt; do
                 echo "$rin"
             else
                 echo "Running NMAP externally..."
-                External Nmap
+                ExternalNmap
                 echo "$rex"
             fi
             ;;
