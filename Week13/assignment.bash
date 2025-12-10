@@ -17,32 +17,30 @@ fullPage=$(curl -sL "$link")
                      #sed -e 's/<[/\]\{0,1\}a[^>]*>//g' | \
                      #sed -e 's/<[/\]\{0,1\}nobr>//g' \
                # > tables.txt
-rows=$(echo "$rows" | \
+rows=$(echo "$fullPage" | \
 xmlstarlet fo --html --recover 2>/dev/null | \
 xmlstarlet sel -t -m "//table/tr" -c "." -n)
 
 # Temp
 temp=$(echo "$rows" |
-grep -A6 "Temperature" |
+grep -A10 "Temperature" |
 sed 's/<[^>]*>//g' |
-grep -v Temperature | grep -v Date |
-sed '/^\s*$/d')
+grep -v Temperature | grep -v Date | sed '/^\s*$/d')
 
 # Pressure
 pressure=$(echo "$rows" |
-grep -A6 "Pressure" |
+grep -A10 "Pressure" |
 sed 's/<[^>]*>//g' |
-grep -v Pressure | grep -v Date |
-sed '/^\s*$/d')
+grep -v Pressure | grep -v Date | sed '/^\s*$/d')
 
 # Covert to Arrays
 tempValues=($(echo "$temp"))
-pressureValues=($(echo "$press"))
+pressureValues=($(echo "$pressure"))
 
 len=${#tempValues[@]}
 
 # Merge and Print Tables
-for ((i=0; i<$len; i+2)); do
+for ((i=0; i<$len; i+=2)); do
     t="${tempValues[$i]}"
     date="${tempValues[$i+1]}"
     p="${pressureValues[$i]}"
