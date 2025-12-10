@@ -21,7 +21,7 @@ while read -r line; do
     date=$(echo "$line" | awk '{print $2}')
     page=$(echo "$line" | awk '{print $3}')
 
-    echo "<tr><td>$ip</td><td>$date</td><td>$page</td></tr>
+    echo "<tr><td>$ip</td><td>$date</td><td>$page</td></tr>"
 
 done < "$file"
 
